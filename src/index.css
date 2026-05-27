@@ -583,7 +583,7 @@
 /* Hero grid */
 .hero-wrap {
   position: relative;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   overflow: hidden;
   background: #f7f3ee;
@@ -702,7 +702,11 @@
   .hero-grid {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.5rem;
+padding: 0.5rem;
   }
+}
+
+html, body {
+  overflow-x: hidden;
 }
