@@ -85,12 +85,12 @@ export default function Navigation({ scrollTo }: NavigationProps) {
           </div>
 
           <button
-            className="md:hidden flex flex-col gap-[6px] p-2"
+            className="md:hidden flex flex-col items-center justify-center gap-[5px] w-10 h-10 bg-linen/80 backdrop-blur-sm rounded-full"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            <span className={`block w-6 h-[1px] bg-midnight transition-transform duration-300 ${mobileOpen ? 'rotate-45 translate-y-[3.5px]' : ''}`} />
-            <span className={`block w-6 h-[1px] bg-midnight transition-transform duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[3.5px]' : ''}`} />
+            <span className={`block w-5 h-[2px] bg-midnight rounded-full transition-transform duration-300 ${mobileOpen ? 'rotate-45 translate-y-[3.5px]' : ''}`} />
+            <span className={`block w-5 h-[2px] bg-midnight rounded-full transition-transform duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[3.5px]' : ''}`} />
           </button>
         </div>
       </nav>
