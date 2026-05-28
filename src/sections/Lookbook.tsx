@@ -181,18 +181,15 @@ export default function Lookbook({ onVisibilityChange }: LookbookProps) {
               />
             </div>
             <div className="product-card__content">
-              <h3
-                className="heading-display text-midnight mb-2"
-                style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
-              >
+              <h3 className="heading-display text-midnight mb-2 text-xl sm:text-2xl md:text-[clamp(1.5rem,3vw,2rem)]">
                 {product.name}
               </h3>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="font-body font-semibold text-lg text-terracotta tracking-tight">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-4">
+                <span className="font-body font-semibold text-base sm:text-lg text-terracotta tracking-tight">
                   {product.priceNgn}
                 </span>
                 <span className="font-body text-taupe text-sm">
-                  / {product.priceUsd}
+                  ({product.priceUsd})
                 </span>
               </div>
               <p className="font-body text-taupe text-sm leading-relaxed mb-6 max-w-md">
@@ -201,7 +198,7 @@ export default function Lookbook({ onVisibilityChange }: LookbookProps) {
 
               {product.hasSizes && (
                 <div className="mb-2">
-                  <div className="flex gap-2 mb-1">
+                  <div className="flex flex-wrap gap-2 mb-1">
                     {sizes.map((size) => (
                       <button
                         key={size}
@@ -234,7 +231,7 @@ export default function Lookbook({ onVisibilityChange }: LookbookProps) {
 
               <button
                 onClick={() => handleAddToBag(product, index)}
-                className="w-full md:w-auto flex items-center justify-center gap-2 bg-midnight text-linen font-body font-medium text-xs uppercase tracking-[0.1em] py-4 px-10 hover:bg-terracotta transition-colors duration-300"
+                className="w-full flex items-center justify-center gap-2 bg-midnight text-linen font-body font-medium text-xs uppercase tracking-[0.1em] py-4 px-10 hover:bg-terracotta transition-colors duration-300 md:w-auto"
               >
                 <ShoppingBag size={16} />
                 {product.name.includes('Consultation') ? 'Book Now' : 'Buy Now'}
