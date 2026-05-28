@@ -17,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const lenisRef = useRef<Lenis | null>(null);
+  const [isLookbookVisible, ] = useState(false);
 
   useEffect(() => {
     const lenis = new Lenis({
