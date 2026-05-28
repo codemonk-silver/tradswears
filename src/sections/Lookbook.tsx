@@ -1,9 +1,5 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
-import { ChevronUp, ChevronDown, ShoppingBag } from 'lucide-react';
-
-interface LookbookProps {
-  onVisibilityChange: (visible: boolean) => void;
-}
+import { useState, useCallback } from 'react';
+import { ShoppingBag } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '2348035550198';
 
@@ -25,7 +21,7 @@ const products = [
     hasSizes: true,
   },
   {
-    name: 'Ade Filà',
+    name: 'Ade Fila',
     priceNgn: '₦85,000',
     priceUsd: '$53',
     desc: 'Sculptural royal cap in quilted terracotta Aso-Oke',
@@ -49,7 +45,7 @@ const products = [
     hasSizes: true,
   },
   {
-    name: 'Aláàárì Bangle Set',
+    name: 'Alaaari Bangle Set',
     priceNgn: '₦125,000',
     priceUsd: '$78',
     desc: 'Hand-cast brass and coral bead bracelets',
@@ -57,7 +53,7 @@ const products = [
     hasSizes: false,
   },
   {
-    name: 'Ìrànlóòwó Clutch',
+    name: 'Iranslowo Clutch',
     priceNgn: '₦195,000',
     priceUsd: '$122',
     desc: 'Aso-Oke panel clutch with brass clasp',
@@ -76,145 +72,148 @@ const products = [
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
-export default function Lookbook({ onVisibilityChange }: LookbookProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+export default function Lookbook() {
   const [selectedSizes, setSelectedSizes] = useState<Record<number, string>>({});
   const [sizeErrors, setSizeErrors] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          onVisibilityChange(entry.isIntersecting && entry.intersectionRatio > 0.8);
-        });
-      },
-      { threshold: [0.8, 0.9, 1.0] }
-    );
-
-    observer.observe(wrapper);
-    return () => observer.disconnect();
-  }, [onVisibilityChange]);
-
-  const scrollUp = () => {
-    if (wrapperRef.current) {
-      wrapperRef.current.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
-    }
-  };
-
-  const scrollDown = () => {
-    if (wrapperRef.current) {
-      wrapperRef.current.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowUp') scrollUp();
-    if (e.key === 'ArrowDown') scrollDown();
-  };
 
   const buildWhatsAppLink = useCallback((product: typeof products[0], index: number): string | null => {
     if (product.hasSizes && !selectedSizes[index]) {
       setSizeErrors((prev) => ({ ...prev, [index]: true }));
-      setTimeout(() => {
-        setSizeErrors((prev) => ({ ...prev, [index]: false }));
-      }, 2000);
+      setTimeout(() => setSizeErrors((prev) => ({ ...prev, [index]: false })), 2000);
       return null;
     }
-
     setSizeErrors((prev) => ({ ...prev, [index]: false }));
-
-    const sizeLine = product.hasSizes && selectedSizes[index]
-      ? `\n📏 *Size:* ${selectedSizes[index]}`
-      : '';
-
-    const message = `Hello Alhaja Kadijat! 👋\n\nI would like to order:\n\n🛍️ *${product.name}*${sizeLine}\n💰 *Price:* ${product.priceNgn} (${product.priceUsd})\n\nPlease let me know the next steps for payment and delivery.\n\nThank you!`;
-
+    const sizeLine = product.hasSizes && selectedSizes[index] ? `\nSize: ${selectedSizes[index]}` : '';
+    const message = `Hello Alhaja Kadijat!\n\nI would like to order:\n\n${product.name}${sizeLine}\nPrice: ${product.priceNgn} (${product.priceUsd})\n\nPlease let me know the next steps for payment and delivery.\n\nThank you!`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   }, [selectedSizes]);
 
-  const handleAddToBag = useCallback((product: typeof products[0], index: number) => {
+  const handleBuy = useCallback((product: typeof products[0], index: number) => {
     const link = buildWhatsAppLink(product, index);
-    if (link) {
-      window.open(link, '_blank', 'noopener,noreferrer');
-    }
+    if (link) window.open(link, '_blank', 'noopener,noreferrer');
   }, [buildWhatsAppLink]);
 
   return (
-    <section id="lookbook" className="bg-linen" onKeyDown={handleKeyDown} tabIndex={0}>
-      <div className="text-center pt-10">
-        <p className="section-label text-terracotta">LOOKBOOK</p>
-      </div>
+    <section id="lookbook" className="bg-linen py-20 md:py-32">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+        <div className="text-center mb-12 md:mb-20">
+          <p className="section-label mb-4 text-terracotta">LOOKBOOK</p>
+          <h2 className="heading-display text-midnight text-3xl md:text-5xl">
+            Our Collection
+          </h2>
+        </div>
 
-      <div className="progress-bar">
-        <div className="progress-bar__fill" />
-      </div>
+        {/* Desktop: 2-column grid */}
+        <div className="hidden md:grid md:grid-cols-2 gap-x-12 gap-y-20">
+          {products.map((product, index) => (
+            <div key={index} className="group">
+              <div className="aspect-[3/4] overflow-hidden mb-6 bg-white">
+                <img
+                  src={product.img}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <div>
+                <h3 className="font-display text-midnight text-xl mb-1">
+                  {product.name}
+                </h3>
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="font-body font-semibold text-terracotta">
+                    {product.priceNgn}
+                  </span>
+                  <span className="font-body text-sm text-taupe">
+                    ({product.priceUsd})
+                  </span>
+                </div>
+                <p className="font-body text-sm text-taupe leading-relaxed mb-4 max-w-md">
+                  {product.desc}
+                </p>
 
-      <button
-        onClick={scrollUp}
-        className="nav-btn nav-btn--up hidden md:flex"
-        aria-label="Scroll up"
-      >
-        <ChevronUp size={24} />
-      </button>
-      <button
-        onClick={scrollDown}
-        className="nav-btn nav-btn--down hidden md:flex"
-        aria-label="Scroll down"
-      >
-        <ChevronDown size={24} />
-      </button>
+                {product.hasSizes && (
+                  <div className="mb-4">
+                    <div className="flex gap-2">
+                      {sizes.map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => {
+                            setSelectedSizes((prev) => ({ ...prev, [index]: prev[index] === size ? '' : size }));
+                            setSizeErrors((prev) => ({ ...prev, [index]: false }));
+                          }}
+                          className={`w-9 h-9 font-body text-xs font-medium border transition-all duration-200 ${
+                            selectedSizes[index] === size
+                              ? 'bg-midnight text-linen border-midnight'
+                              : sizeErrors[index]
+                                ? 'border-terracotta text-midnight'
+                                : 'border-[rgba(26,26,46,0.15)] text-midnight hover:border-midnight'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                    {sizeErrors[index] && (
+                      <p className="font-body text-xs text-terracotta mt-2">Please select a size</p>
+                    )}
+                  </div>
+                )}
 
-      <div
-        ref={wrapperRef}
-        className="lookbook-wrapper scrollbar-hide"
-      >
-        {products.map((product, index) => (
-          <div key={index} className="product-card">
-            <div className="product-card__image">
-              <img
-                src={product.img}
-                alt={product.name}
-                loading="lazy"
-              />
+                <button
+                  onClick={() => handleBuy(product, index)}
+                  className="flex items-center gap-2 bg-midnight text-linen font-body font-medium text-xs uppercase tracking-[0.1em] py-3 px-8 hover:bg-terracotta transition-colors duration-300"
+                >
+                  <ShoppingBag size={15} />
+                  {product.name.includes('Consultation') ? 'Book Now' : 'Buy Now'}
+                </button>
+              </div>
             </div>
-            <div className="product-card__content">
-              <h3 className="heading-display text-midnight mb-2 text-xl sm:text-2xl md:text-[clamp(1.5rem,3vw,2rem)]">
+          ))}
+        </div>
+
+        {/* Mobile: single column, stacked cards */}
+        <div className="md:hidden space-y-12">
+          {products.map((product, index) => (
+            <div key={index} className="border-b border-[rgba(26,26,46,0.08)] pb-12 last:border-0">
+              <div className="aspect-[3/4] overflow-hidden mb-4 bg-white">
+                <img
+                  src={product.img}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="font-display text-midnight text-xl mb-1">
                 {product.name}
               </h3>
-              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-4">
-                <span className="font-body font-semibold text-base sm:text-lg text-terracotta tracking-tight">
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="font-body font-semibold text-terracotta text-base">
                   {product.priceNgn}
                 </span>
-                <span className="font-body text-taupe text-sm">
+                <span className="font-body text-sm text-taupe">
                   ({product.priceUsd})
                 </span>
               </div>
-              <p className="font-body text-taupe text-sm leading-relaxed mb-6 max-w-md">
+              <p className="font-body text-sm text-taupe leading-relaxed mb-4">
                 {product.desc}
               </p>
 
               {product.hasSizes && (
-                <div className="mb-2">
-                  <div className="flex flex-wrap gap-2 mb-1">
+                <div className="mb-4">
+                  <div className="flex gap-2">
                     {sizes.map((size) => (
                       <button
                         key={size}
                         onClick={() => {
-                          setSelectedSizes((prev) => ({
-                            ...prev,
-                            [index]: prev[index] === size ? '' : size,
-                          }));
+                          setSelectedSizes((prev) => ({ ...prev, [index]: prev[index] === size ? '' : size }));
                           setSizeErrors((prev) => ({ ...prev, [index]: false }));
                         }}
                         className={`w-10 h-10 font-body text-xs font-medium border transition-all duration-200 ${
                           selectedSizes[index] === size
                             ? 'bg-midnight text-linen border-midnight'
                             : sizeErrors[index]
-                              ? 'bg-transparent text-midnight border-terracotta'
-                              : 'bg-transparent text-midnight border-[rgba(26,26,46,0.2)] hover:border-midnight'
+                              ? 'border-terracotta text-midnight'
+                              : 'border-[rgba(26,26,46,0.15)] text-midnight hover:border-midnight'
                         }`}
                       >
                         {size}
@@ -222,23 +221,21 @@ export default function Lookbook({ onVisibilityChange }: LookbookProps) {
                     ))}
                   </div>
                   {sizeErrors[index] && (
-                    <p className="font-body text-xs text-terracotta mb-3">
-                      Please select a size to continue
-                    </p>
+                    <p className="font-body text-xs text-terracotta mt-2">Please select a size</p>
                   )}
                 </div>
               )}
 
               <button
-                onClick={() => handleAddToBag(product, index)}
-                className="w-full flex items-center justify-center gap-2 bg-midnight text-linen font-body font-medium text-xs uppercase tracking-[0.1em] py-4 px-10 hover:bg-terracotta transition-colors duration-300 md:w-auto"
+                onClick={() => handleBuy(product, index)}
+                className="w-full flex items-center justify-center gap-2 bg-midnight text-linen font-body font-medium text-xs uppercase tracking-[0.1em] py-4 px-8 hover:bg-terracotta transition-colors duration-300"
               >
                 <ShoppingBag size={16} />
                 {product.name.includes('Consultation') ? 'Book Now' : 'Buy Now'}
               </button>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

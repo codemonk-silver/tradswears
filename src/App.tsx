@@ -62,7 +62,7 @@ export default function App() {
       <Hero />
       <Collections />
       <OurCraft />
-      <Lookbook onVisibilityChange={setIsLookbookVisible} />
+      <Lookbook />
       <Bespoke />
       <Testimonials />
       <DeliveryFAQ />
