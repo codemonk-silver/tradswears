@@ -597,7 +597,7 @@
   grid-template-rows: repeat(5, 1fr);
   gap: 2rem;
   transform-style: preserve-3d;
-  padding: 2rem;
+  padding: 100px 2rem 2rem 2rem;
 }
 
 .hero-grid__item {
@@ -703,7 +703,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 0.5rem;
-padding: 0.5rem;
+    padding: 88px 0.5rem 0.5rem 0.5rem;
   }
 }
 

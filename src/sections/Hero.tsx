@@ -73,27 +73,37 @@ export default function Hero() {
         ))}
       </div>
 
+      {/* Dark overlay on images */}
+      <div
+        className="absolute inset-0 z-[5]"
+        style={{ background: 'rgba(26, 26, 46, 0.55)' }}
+      />
+
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <h1
-          className="heading-display text-midnight mb-6"
+          className="heading-display text-white mb-6"
           style={{
             fontSize: 'clamp(3rem, 6vw, 4.5rem)',
-            textShadow: '0 2px 20px rgba(247, 243, 238, 0.8)',
+            textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
           }}
         >
           Woven for Royalty
         </h1>
         <p
-          className="font-body text-taupe max-w-[440px] mb-10"
+          className="font-body text-white/90 max-w-[440px] mb-10"
           style={{
             fontSize: '16px',
             lineHeight: 1.6,
-            textShadow: '0 1px 10px rgba(247, 243, 238, 0.6)',
+            textShadow: '0 1px 2px rgba(0, 0, 0, 0.25)',
           }}
         >
           Handwoven Aso-Oke & bespoke Nigerian luxury, crafted in Lagos since 1987
         </p>
-        <button onClick={scrollToCollections} className="btn-primary">
+        <button
+          onClick={scrollToCollections}
+          className="font-body font-medium text-[13px] uppercase tracking-[0.1em] px-10 py-4 bg-midnight text-linen border border-midnight hover:bg-terracotta hover:border-terracotta transition-all duration-300"
+          style={{ textShadow: 'none' }}
+        >
           Explore Collections
         </button>
       </div>
